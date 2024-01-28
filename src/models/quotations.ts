@@ -1,8 +1,8 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, Types, model, models } from 'mongoose';
 
 // Step 1: Create an interface representing a document in MongoDB.
 interface IQuotation {
-	_id: Types.ObjectId;
+	companyId: Types.ObjectId;
 	Quotation_file: string;
 	Quotation_date: string;
 }
@@ -10,7 +10,7 @@ interface IQuotation {
 // Step 2: Create a Schema corresponding to the document interface.
 const QuotationSchema = new Schema<IQuotation>(
 	{
-		_id: { type: Schema.Types.ObjectId, required: true, unique: true },
+		companyId: { type: Schema.Types.ObjectId, required: true },
 		Quotation_file: { type: String, required: true },
 		Quotation_date: { type: String, required: true },
 	},
@@ -18,6 +18,6 @@ const QuotationSchema = new Schema<IQuotation>(
 );
 
 // Step 3: Create a Model.
-const QuotationModel = model<IQuotation>('Quotation', QuotationSchema);
+const QuotationModel = models.Quotation || model('Quotation', QuotationSchema);
 
 export default QuotationModel;

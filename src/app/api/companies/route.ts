@@ -40,6 +40,23 @@ export async function POST(req: NextRequest) {
 		});
 	}
 }
+export async function PUT(req: NextRequest) {
+	await dbConnect();
+	const companyId = req.nextUrl.searchParams.get('companyId'); // Correctly use the get method
+	try {
+		const body = await req.json();
+		const updatedCompany = await CompanyModel.updateOne(
+			{ Company_id: companyId },
+			body,
+		);
+		if (!updatedCompany) {
+			return new Response(null, { status: 404 });
+		}
+		return NextResponse.json(updatedCompany);
+	} catch (error) {
+		return new Response(JSON.stringify(error), { status: 500 });
+	}
+}
 
 export async function DELETE(req: NextRequest) {
 	await dbConnect();
@@ -67,24 +84,6 @@ export async function DELETE(req: NextRequest) {
 
 		// Respond with no content but a success status code
 		return new Response(null, { status: 204 });
-	} catch (error) {
-		return new Response(JSON.stringify(error), { status: 500 });
-	}
-}
-
-export async function PUT(req: NextRequest) {
-	await dbConnect();
-	const companyId = req.nextUrl.searchParams.get('companyId'); // Correctly use the get method
-	try {
-		const body = await req.json();
-		const updatedCompany = await CompanyModel.updateOne(
-			{ Company_id: companyId },
-			body,
-		);
-		if (!updatedCompany) {
-			return new Response(null, { status: 404 });
-		}
-		return NextResponse.json(updatedCompany);
 	} catch (error) {
 		return new Response(JSON.stringify(error), { status: 500 });
 	}
