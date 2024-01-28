@@ -3,6 +3,27 @@ import { NextResponse, NextRequest } from 'next/server';
 import dbConnect from '../../../utils/mongodb'; // Adjust the import path as necessary
 import CompanyModel from '../../../models/companies'; // Adjust the import path as necessary
 
+export async function GET(req: NextRequest) {
+	await dbConnect();
+	const companyId = req.nextUrl.searchParams.get('companyId'); // Correctly use the get method
+	try {
+		if (companyId) {
+			// If a companyId is provided, fetch a single company
+			const company = await CompanyModel.findOne({ Company_id: companyId });
+			if (!company) {
+				return new Response(null, { status: 404 });
+			}
+			return NextResponse.json(company);
+		} else {
+			// If no companyId is provided, fetch all companies
+			const companies = await CompanyModel.find({});
+			return NextResponse.json(companies);
+		}
+	} catch (error) {
+		return new Response(JSON.stringify(error), { status: 500 });
+	}
+}
+
 export async function POST(req: NextRequest) {
 	await dbConnect();
 	try {
@@ -64,27 +85,6 @@ export async function PUT(req: NextRequest) {
 			return new Response(null, { status: 404 });
 		}
 		return NextResponse.json(updatedCompany);
-	} catch (error) {
-		return new Response(JSON.stringify(error), { status: 500 });
-	}
-}
-
-export async function GET(req: NextRequest) {
-	await dbConnect();
-	const companyId = req.nextUrl.searchParams.get('companyId'); // Correctly use the get method
-	try {
-		if (companyId) {
-			// If a companyId is provided, fetch a single company
-			const company = await CompanyModel.findOne({ Company_id: companyId });
-			if (!company) {
-				return new Response(null, { status: 404 });
-			}
-			return NextResponse.json(company);
-		} else {
-			// If no companyId is provided, fetch all companies
-			const companies = await CompanyModel.find({});
-			return NextResponse.json(companies);
-		}
 	} catch (error) {
 		return new Response(JSON.stringify(error), { status: 500 });
 	}

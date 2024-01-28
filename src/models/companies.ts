@@ -17,7 +17,7 @@ interface ICompany {
 	Company_fieldsOfWork: string;
 	Company_industries: string;
 	Company_subscription: string;
-	Company_rating: Types.ObjectId;
+	Company_rating: number;
 	Company_type: string;
 	quotations?: Types.ObjectId[]; // Optional field, only for 'constructer' type
 	constructions?: Types.ObjectId[]; // Optional field, only for 'constructer' type
@@ -45,11 +45,7 @@ const companySchema = new Schema<ICompany>(
 		Company_fieldsOfWork: { type: String, required: true },
 		Company_industries: { type: String, required: true },
 		Company_subscription: { type: String, required: true },
-		Company_rating: {
-			type: Schema.Types.ObjectId,
-			required: true,
-			ref: 'Rating', // This should match the name you used in mongoose.model() for the Rating
-		},
+		Company_rating: { type: Number, required: true, default: 0 },
 		Company_type: { type: String, required: true },
 		quotations: {
 			type: [{ type: Schema.Types.ObjectId, ref: 'Quotation' }],
@@ -85,8 +81,4 @@ companySchema.pre('save', function (next) {
 	next();
 });
 
-// Step 3: Create a Model.
-// const CompanyModel = model<ICompany>('Company', companySchema);
 export default models.Company || model<ICompany>('Company', companySchema);
-
-// export default CompanyModel;
