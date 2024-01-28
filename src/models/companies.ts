@@ -14,7 +14,7 @@ interface ICompany {
 	Company_country: string;
 	Company_city: string;
 	Company_certificate: string;
-	Company_fieldsOfWork: string;
+	Company_fieldsOfWork: Types.Array<string>;
 	Company_industries: string;
 	Company_subscription: string;
 	Company_rating: number;
@@ -42,7 +42,7 @@ const companySchema = new Schema<ICompany>(
 		Company_country: { type: String, required: true },
 		Company_city: { type: String, required: true },
 		Company_certificate: { type: String, required: true },
-		Company_fieldsOfWork: { type: String, required: true },
+		Company_fieldsOfWork: { type: [String], required: true },
 		Company_industries: { type: String, required: true },
 		Company_subscription: { type: String, required: true },
 		Company_rating: { type: Number, required: true, default: 0 },

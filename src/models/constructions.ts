@@ -1,6 +1,5 @@
-import { Schema, model, Types } from 'mongoose';
+import { Schema, model, Types, models } from 'mongoose';
 
-// Step 1: Create an interface representing a document in MongoDB.
 interface IConstruction {
 	Construction_id: string;
 	Construction_company: string;
@@ -14,10 +13,9 @@ interface IConstruction {
 	Construction_city: string;
 	Construction_deadline: string;
 	Construction_drawing_file: string;
-	Construction_categories: Types.ObjectId[]; // Array of ObjectIds referencing Construction_category
+	Construction_categories: Types.ObjectId[];
 }
 
-// Step 2: Create a Schema corresponding to the document interface.
 const ConstructionSchema = new Schema<IConstruction>(
 	{
 		Construction_id: { type: String, required: true, unique: true },
@@ -34,15 +32,13 @@ const ConstructionSchema = new Schema<IConstruction>(
 		Construction_drawing_file: { type: String, required: true },
 		Construction_categories: [
 			{ type: Types.ObjectId, ref: 'Construction_category' },
-		], // Reference to multiple Construction_category documents
+		],
 	},
 	{ timestamps: true },
 );
 
-// Step 3: Create a Model.
-const ConstructionModel = model<IConstruction>(
-	'Construction',
-	ConstructionSchema,
-);
+const ConstructionModel =
+	models.Construction ||
+	model<IConstruction>('Construction', ConstructionSchema);
 
 export default ConstructionModel;
