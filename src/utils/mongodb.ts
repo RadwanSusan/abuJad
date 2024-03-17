@@ -21,7 +21,7 @@ if (!cached) {
 }
 
 async function dbConnect() {
-	console.log('radwan');
+	console.log('Connecting to MongoDB...');
 	if (cached.conn) {
 		return cached.conn;
 	}
@@ -32,12 +32,14 @@ async function dbConnect() {
 		};
 
 		cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+			console.log('Connected to MongoDB!');
 			return mongoose;
 		});
 	}
 
 	try {
 		cached.conn = await cached.promise;
+		console.log('Connected to MongoDB!');
 	} catch (e) {
 		cached.promise = null;
 		throw e;
