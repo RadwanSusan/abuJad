@@ -23,19 +23,34 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
 	await dbConnect();
+
 	try {
 		const body = await req.json();
-		body.Company_id = Math.random().toString(36).substring(7);
-		const company = new CompanyModel(body);
-		await company.save();
-		return NextResponse.json(company);
+		if (body.action === 'login') {
+			const { Company_email, Company_password, Company_type } = body;
+			const company = await CompanyModel.findOne({
+				Company_email,
+				Company_password,
+				Company_type,
+			});
+			if (!company) {
+				return new Response(
+					JSON.stringify({ error: 'Invalid credentials' }),
+					{ status: 401, headers: { 'Content-Type': 'application/json' } },
+				);
+			}
+			return NextResponse.json(company);
+		} else {
+			body.Company_id = Math.random().toString(36).substring(7);
+			const company = new CompanyModel(body);
+			await company.save();
+			return NextResponse.json(company);
+		}
 	} catch (error) {
 		console.log(error);
 		return new Response(JSON.stringify(error), {
 			status: 400,
-			headers: {
-				'Content-Type': 'application/json',
-			},
+			headers: { 'Content-Type': 'application/json' },
 		});
 	}
 }
