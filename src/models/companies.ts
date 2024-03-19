@@ -24,6 +24,7 @@ interface ICompany {
 	Company_isActive: boolean;
 	Company_constructions: Types.Array<string>;
 	Company_quotations: Types.Array<string>;
+	Company_otp: number;
 }
 
 const companySchema = new Schema<ICompany>(
@@ -60,6 +61,7 @@ const companySchema = new Schema<ICompany>(
 		Company_isActive: { type: Boolean, required: true, default: true },
 		Company_constructions: { type: [String], default: [] },
 		Company_quotations: { type: [String], default: [] },
+		Company_otp: { type: Number, default: 0 },
 	},
 	{ timestamps: true },
 );
