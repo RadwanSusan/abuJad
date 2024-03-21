@@ -25,6 +25,8 @@ interface ICompany {
 	Company_constructions: Types.Array<string>;
 	Company_quotations: Types.Array<string>;
 	Company_otp: number;
+	Company_rememberMe: boolean;
+	Company_notificationSettings: boolean;
 }
 
 const companySchema = new Schema<ICompany>(
@@ -62,6 +64,8 @@ const companySchema = new Schema<ICompany>(
 		Company_constructions: { type: [String], default: [] },
 		Company_quotations: { type: [String], default: [] },
 		Company_otp: { type: Number, default: 0 },
+		Company_rememberMe: { type: Boolean, default: false },
+		Company_notificationSettings: { type: Boolean, default: true },
 	},
 	{ timestamps: true },
 );

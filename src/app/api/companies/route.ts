@@ -47,7 +47,6 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json(company);
 		}
 	} catch (error) {
-		console.log(error);
 		return new Response(JSON.stringify(error), {
 			status: 400,
 			headers: { 'Content-Type': 'application/json' },
