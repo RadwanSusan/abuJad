@@ -2,24 +2,24 @@ import { NextResponse, NextRequest } from 'next/server';
 import dbConnect from '../../../utils/mongodb';
 import CompanyModel from '../../../models/companies';
 
-export async function GET(req: NextRequest) {
-	await dbConnect();
-	const companyId = req.nextUrl.searchParams.get('companyId');
-	try {
-		if (companyId) {
-			const company = await CompanyModel.findOne({ Company_id: companyId });
-			if (!company) {
-				return new Response(null, { status: 404 });
-			}
-			return NextResponse.json(company);
-		} else {
-			const companies = await CompanyModel.find({});
-			return NextResponse.json(companies);
-		}
-	} catch (error) {
-		return new Response(JSON.stringify(error), { status: 500 });
-	}
-}
+// export async function GET(req: NextRequest) {
+// 	await dbConnect();
+// 	const companyId = req.nextUrl.searchParams.get('companyId');
+// 	try {
+// 		if (companyId) {
+// 			const company = await CompanyModel.findOne({ Company_id: companyId });
+// 			if (!company) {
+// 				return new Response(null, { status: 404 });
+// 			}
+// 			return NextResponse.json(company);
+// 		} else {
+// 			const companies = await CompanyModel.find({});
+// 			return NextResponse.json(companies);
+// 		}
+// 	} catch (error) {
+// 		return new Response(JSON.stringify(error), { status: 500 });
+// 	}
+// }
 
 export async function POST(req: NextRequest) {
 	await dbConnect();
@@ -94,4 +94,32 @@ export async function DELETE(req: NextRequest) {
 	} catch (error) {
 		return new Response(JSON.stringify(error), { status: 500 });
 	}
+}
+
+export async function GET(req: NextRequest) {
+	await dbConnect();
+	const companyId = req.nextUrl.searchParams.get('companyId');
+	const companyType = req.nextUrl.searchParams.get('type');
+
+	try {
+		if (companyId) {
+			const company = await CompanyModel.findOne({ Company_id: companyId });
+			if (!company) {
+				return new Response(null, { status: 404 });
+			}
+			return NextResponse.json(company);
+		} else if (companyType) {
+			const companies = await CompanyModel.find({
+				Company_type: companyType,
+			});
+			return NextResponse.json(companies);
+		} else {
+			const companies = await CompanyModel.find({});
+			return NextResponse.json(companies);
+		}
+	} catch (error) {
+		return new Response(JSON.stringify(error), { status: 500 });
+	}
+
+
 }
