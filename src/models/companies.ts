@@ -27,6 +27,7 @@ interface ICompany {
 	Company_otp: number;
 	Company_rememberMe: boolean;
 	Company_notificationSettings: boolean;
+	Company_phoneCountryCode: string;
 }
 
 const companySchema = new Schema<ICompany>(
@@ -66,6 +67,7 @@ const companySchema = new Schema<ICompany>(
 		Company_otp: { type: Number, default: 0 },
 		Company_rememberMe: { type: Boolean, default: false },
 		Company_notificationSettings: { type: Boolean, default: true },
+		Company_phoneCountryCode: { type: String, required: true },
 	},
 	{ timestamps: true },
 );
